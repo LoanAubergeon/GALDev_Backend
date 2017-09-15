@@ -402,7 +402,8 @@ router.put("/routes", function(req, res){
 	var endLat = parseFloat(req.body.endLat);
 	var endLng = parseFloat(req.body.endLng);
 
-	var dates = JSON.parse(req.body.dates); // Changement pour obtenir un tableau
+	var dates = req.body.dates.split(";");
+    
 	console.log(req.body.dates)
 	console.log(dates);
 	
@@ -427,10 +428,10 @@ router.put("/routes", function(req, res){
 					if(err) throw err;
 					// Next, we store the weekly repeat in the database.
 					// Each line of the RouteMeta table store a date, and an time interval from this date.
-					for (var i = 0; i < dates.length; i ++){
+					for (var i = 0; i < dates.length-1; i=i+2){
 						query += mysql.format(
 							"INSERT INTO `RouteDate` (`id`, `route`, `route_date`, `weekly_repeat`) VALUES (NULL, ?, ?, ?);",
-							[result.insertId, dates[i].date, dates[i].weekRepeat]
+							[result.insertId, dates[i], dates[i+1]]
 						);
 					}
 
