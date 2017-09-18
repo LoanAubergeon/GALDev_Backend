@@ -323,6 +323,22 @@ router.get("/routes/:routeid", function(req, res){
 });
 
 
+// RouteDate				: GET /api/routedate/:routeid
+// URL Params		:
+//		- routeid					: The ID of the route you want to retrieve the info.
+// Body Params	: None
+// Return		:
+// 		- the mysql object for this route.
+// Description	:
+//					This routedate send back the public informations about the chosen routedate.
+router.get("/routedate/:routeid", function(req, res){
+	db_con.query("SELECT * FROM RouteDate WHERE route = ?", [req.params.routeid], function(err, result){
+		if(err) throw err;
+		res.json(result);
+	});
+});
+
+
 // Route				: GET /api/routes/search
 // URL Params		:
 // 		- startLat			: The Latitude of the starting point
@@ -404,8 +420,8 @@ router.put("/routes", function(req, res){
 
 	var dates = req.body.dates.split(";");
     
-	console.log(req.body.dates)
-	console.log(dates);
+	//console.log(req.body.dates)
+	//console.log(dates);
 	
 
 	var driverId = req.body.driverId;
