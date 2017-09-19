@@ -397,6 +397,51 @@ router.get("/routes/search", function(req, res){
 		});
 });
 
+// Route				: GET /api/routes/search
+// URL Params		:
+// 		- startLat			: The Latitude of the starting point
+// 		- startLng			: The Longitude of the starting point
+// 		- endLat				: The Latitude of the end point
+// 		- endLng				: The Longitude of the end point
+// 		- startDate			: The starting datetime of the route
+// 		- endDate				: The end datetime of the route
+//		- maxWaitingSeconds : The max number of seconds that the user can wait.
+// Body Params	: None
+// Return		:
+// 		- An array with every routes that match the parameters.
+// Description	:
+//		This route can be used in order to search for a route that match specific
+//		parameters. Each of these must be provided, none can be null.
+router.get("/routes/searchT", function(req, res){
+	// We retrieve the parameters in custom vars
+	var startDate = req.param("startDate");
+	var endDate = req.param("endDate");
+	var startLatitude = parseFloat(req.param("startLat"));
+	var startLongitude = parseFloat(req.param("startLng"));
+	var endLatitude = parseFloat(req.param("endLat"));
+	var endLongitude = parseFloat(req.param("endLng"));
+	var maxWaitingSeconds = req.param("maxWaitingSeconds");
+
+	// then, we simply launch this heavy query into the database.
+	db_con.query(
+        "SELECT * FROM "+
+			"(SELECT RP.`route`, RP.`point_rank`, RP.`id` FROM `RoutePoints` RP "+
+				"INNER JOIN `Route` R ON R.`id` = RP.`route` "+
+				"INNER JOIN `RouteDate`RD ON R.`id` = RD.`route` "+
+        
+        "ORDER BY "+
+				"ST_Distance(`point`, ST_GeomFromText('Point(? ?)'))) as starting_point, "
+        
+        
+        , [startLatitude,startLongitude],
+		
+		function(err, result){
+			if(err) throw err;
+
+			res.json(result);
+		});
+});
+
 // Route				: PUT /api/routes/
 // URL Params		: None
 // Body Params	:
