@@ -208,6 +208,7 @@ router.use(function(req, res, next){
 		});
 	}
 });
+
 // =======================================================================
 //	Warning : Every route defined after these lines must need a token to
 // 	be accessible. You can define it for example in the header of your
@@ -414,30 +415,18 @@ router.get("/routes/search", function(req, res){
 //		parameters. Each of these must be provided, none can be null.
 router.get("/routes/searchT", function(req, res){
 	// We retrieve the parameters in custom vars
-	var startDate = req.param("startDate");
-	var endDate = req.param("endDate");
-	var startLatitude = parseFloat(req.param("startLat"));
-	var startLongitude = parseFloat(req.param("startLng"));
-	var endLatitude = parseFloat(req.param("endLat"));
-	var endLongitude = parseFloat(req.param("endLng"));
-	var maxWaitingSeconds = req.param("maxWaitingSeconds");
+	//var startDate = req.param("startDate");
+	//var endDate = req.param("endDate");
+	//var startLatitude = parseFloat(req.param("startLat"));
+	//var startLongitude = parseFloat(req.param("startLng"));
+	//var endLatitude = parseFloat(req.param("endLat"));
+	//var endLongitude = parseFloat(req.param("endLng"));
+	//var maxWaitingSeconds = req.param("maxWaitingSeconds");
 
 	// then, we simply launch this heavy query into the database.
 	db_con.query(
-        "SELECT * FROM "+
-			"(SELECT RP.`route`, RP.`point_rank`, RP.`id` FROM `RoutePoints` RP "+
-				"INNER JOIN `Route` R ON R.`id` = RP.`route` "+
-				"INNER JOIN `RouteDate`RD ON R.`id` = RD.`route` "+
-        
-        "ORDER BY "+
-				"ST_Distance(`point`, ST_GeomFromText('Point(? ?)'))) as starting_point, "
-        
-        
-        , [startLatitude,startLongitude],
-		
-		function(err, result){
+        "SELECT * FROM Route", function(err, result){
 			if(err) throw err;
-
 			res.json(result);
 		});
 });
@@ -464,10 +453,10 @@ router.put("/routes", function(req, res){
 	var endLng = parseFloat(req.body.endLng);
 
 	var dates = req.body.dates.split(";");
-    
+
 	//console.log(req.body.dates)
 	//console.log(dates);
-	
+
 
 	var driverId = req.body.driverId;
 
