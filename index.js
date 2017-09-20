@@ -413,7 +413,7 @@ router.get("/routes/search", function(req, res){
 // Description	:
 //		This route can be used in order to search for a route that match specific
 //		parameters. Each of these must be provided, none can be null.
-router.get("/routes/searchT", function(req, res){
+router.get("/searchtest", function(req, res){
 	// We retrieve the parameters in custom vars
 	//var startDate = req.param("startDate");
 	//var endDate = req.param("endDate");
@@ -424,12 +424,14 @@ router.get("/routes/searchT", function(req, res){
 	//var maxWaitingSeconds = req.param("maxWaitingSeconds");
 
 	// then, we simply launch this heavy query into the database.
-	db_con.query(
-        "SELECT * FROM Route", function(err, result){
+	db_con.query("SELECT * FROM Route", function(err, result){
 			if(err) throw err;
 			res.json(result);
 		});
 });
+
+
+
 
 // Route				: PUT /api/routes/
 // URL Params		: None
