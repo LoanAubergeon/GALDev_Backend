@@ -423,7 +423,7 @@ router.get("/search", function(req, res){
 	//var maxWaitingSeconds = req.param("maxWaitingSeconds");
 
 	// then, we simply launch this heavy query into the database.
-	db_con.query("SELECT * FROM Route INNER JOIN RouteDate ON Route.id = RouteDate.route WHERE RouteDate.route_date > '?' ORDER BY RouteDate.route_date",[date] , function(err, result){
+	db_con.query("SELECT * FROM 'Route' INNER JOIN 'RouteDate' ON 'Route'.'id' = 'RouteDate'.'route' WHERE 'RouteDate'.'route_date' > STR_TO_DATE('?', '%Y-%m-%d %k:%i:%s') ORDER BY 'RouteDate'.'route_date';",[date] , function(err, result){
 			if(err) throw err;
 			res.json(result);
 		});
