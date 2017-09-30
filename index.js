@@ -415,7 +415,7 @@ router.get("/routes/search", function(req, res){
 //		parameters. Each of these must be provided, none can be null.
 router.get("/search", function(req, res){
 	// We retrieve the parameters in custom vars
-	var date = req.param("date");
+	//var date = req.param("date");
 	//var startLatitude = parseFloat(req.param("startLat"));
 	//var startLongitude = parseFloat(req.param("startLng"));
 	//var endLatitude = parseFloat(req.param("endLat"));
@@ -423,7 +423,10 @@ router.get("/search", function(req, res){
 	//var maxWaitingSeconds = req.param("maxWaitingSeconds");
 
 	// then, we simply launch this heavy query into the database.
-	db_con.query("SELECT * FROM 'Route' INNER JOIN 'RouteDate' ON 'Route'.'id' = 'RouteDate'.'route' WHERE 'RouteDate'.'route_date' > STR_TO_DATE('?', '%Y-%m-%d %k:%i:%s') ORDER BY 'RouteDate'.'route_date'; ", [date], function(err, result){
+	db_con.query("SELECT * FROM 'Route' R, 'RouteDate' RD "+
+                 "WHERE (R.'id' = RD.'route') AND (RD.'route_date' > STR_TO_DATE('?', '%Y-%m-%d %k:%i:%s')) "+
+                 "ORDER BY 'RouteDate'.'route_date' "
+                 , [req.param("date")], function(err, result){
 			if(err) throw err;
 			res.json(result);
 		});
