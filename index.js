@@ -432,6 +432,22 @@ router.get("/search/", function(req, res){
 		});
 });
 
+router.get("/search2/", function(req, res){
+	// We retrieve the parameters in custom vars
+	var routeDate = req.param("date");
+	var startLatitude = parseFloat(req.param("startLat"));
+	var startLongitude = parseFloat(req.param("startLng"));
+	var endLatitude = parseFloat(req.param("endLat"));
+	var endLongitude = parseFloat(req.param("endLng"));
+	//var maxWaitingSeconds = req.param("maxWaitingSeconds");
+
+	// then, we simply launch this heavy query into the database.
+	db_con.query("SELECT * FROM Route, RouteDate WHERE (Route.id = RouteDate.route) AND ((RouteDate.route_date >= ?) OR ( RouteDate.weekly_repeat= 1 AND DAYOFWEEK(?) = DAYOFWEEK(`route_date`) )) ORDER BY RouteDate.route_date AND ( ST_Distance(Route.startingPoint, ST_GeomFromText('Point(? ?)')) AND ST_Distance(Route.startingPoint, ST_GeomFromText('Point(? ?)')) )"
+                 , [routeDate, routeDate, startLatitude, startLongitude, endLatitude, endLongitude], function(err, result){
+			if(err) throw err;
+			res.json(result);
+		});
+});
 
 
 
