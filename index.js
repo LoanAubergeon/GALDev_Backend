@@ -323,6 +323,12 @@ router.get("/routes/:routeid", function(req, res){
 	});
 });
 
+router.get("/routes/:driverid", function(req, res){
+	db_con.query("SELECT * FROM Route, RouteDate WHERE (Route.id = RouteDate.route) AND (driver = ?)", [req.params.driverid], function(err, result){
+		if(err) throw err;
+		res.json(result);
+	});
+});
 
 // RouteDate				: GET /api/routedate/:routeid
 // URL Params		:
@@ -334,6 +340,13 @@ router.get("/routes/:routeid", function(req, res){
 //					This routedate send back the public informations about the chosen routedate.
 router.get("/routedate/:routeid", function(req, res){
 	db_con.query("SELECT * FROM RouteDate WHERE route = ?", [req.params.routeid], function(err, result){
+		if(err) throw err;
+		res.json(result);
+	});
+});
+
+router.get("/routedate", function(req, res){
+	db_con.query("SELECT * FROM RouteDate", function(err, result){
 		if(err) throw err;
 		res.json(result);
 	});
