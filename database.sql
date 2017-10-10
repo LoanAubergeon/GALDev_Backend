@@ -71,7 +71,11 @@ CREATE TABLE `Route` (
   `id` int(11) NOT NULL COMMENT 'The id of the route',
   `startingPoint` point NOT NULL COMMENT 'The geographical point at the beginning of the route',
   `endPoint` point NOT NULL COMMENT 'The geographical point at the end of the route',
-  `driver` int(11) DEFAULT NULL COMMENT 'The user that created this route'
+  `driver` int(11) DEFAULT NULL COMMENT 'The user that created this route',
+  `originAdress` varchar(128) NOT NULL COMMENT 'The adress of the origin of the route'
+  `destinationAdress` varchar(128) NOT NULL COMMENT 'The adress of the destination of the route' 
+  `distance` varchar(64) NOT NULL COMMENT 'The distance between the origin and the destination of the route' 
+  `duration` varchar(64) NOT NULL COMMENT 'the duration of the route' 
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='List all the routes recorded in the app';
 
 -- --------------------------------------------------------

@@ -471,6 +471,11 @@ router.put("/routes", function(req, res){
 	var startLng = parseFloat(req.body.startLng);
 	var endLat = parseFloat(req.body.endLat);
 	var endLng = parseFloat(req.body.endLng);
+    
+    var origin = req.body.origin
+    var destination = req.body.destination
+    var distance = req.body.distance
+    var duration = req.body.duration
 
 	var dates = req.body.dates.split(";");
 
@@ -492,8 +497,8 @@ router.put("/routes", function(req, res){
 			res.json(error);
 		} else {
 			// If there is no error, we put the new route into the database.
-			db_con.query("INSERT INTO `Route` (`id`, `startingPoint`, `endPoint`, `driver`) VALUES (NULL, ST_GeomFromText('POINT(? ?)'), ST_GeomFromText('POINT(? ?)'), ?);",
-				[startLat, startLng, endLat, endLng, driverId],
+			db_con.query("INSERT INTO `Route` (`id`, `startingPoint`, `endPoint`, `driver`,`originAdress`,`destinationAdress`,`distance`,`duration`) VALUES (NULL, ST_GeomFromText('POINT(? ?)'), ST_GeomFromText('POINT(? ?)'), ?,? ,? ,? , ?);",
+				[startLat, startLng, endLat, endLng, driverId, origin, destination, distance, duration],
 				function(err, result){
 					if(err) throw err;
 					// Next, we store the weekly repeat in the database.
