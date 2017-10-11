@@ -323,8 +323,8 @@ router.get("/routes/:routeid", function(req, res){
 	});
 });
 
-router.get("/routes/:driverid", function(req, res){
-	db_con.query("SELECT * FROM Route, RouteDate WHERE (Route.id = RouteDate.route) AND (driver = ?)", [req.params.driverid], function(err, result){
+router.get("/driverroutes/:driverid", function(req, res){
+	db_con.query("SELECT * FROM Route, RouteDate WHERE (Route.id = RouteDate.route) AND (Route.driver = ?)", [req.params.driverid], function(err, result){
 		if(err) throw err;
 		res.json(result);
 	});
