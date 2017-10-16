@@ -368,15 +368,14 @@ router.get("/routedate", function(req, res){
 // Description	:
 //		This route can be used in order to search for a route that match specific
 //		parameters. Each of these must be provided, none can be null.
-router.get("/routes/search", function(req, res){
+router.get("/searchT", function(req, res){
 	// We retrieve the parameters in custom vars
-	var startDate = req.param("startDate");
-	var endDate = req.param("endDate");
+	var startDate = req.param("date");
 	var startLatitude = parseFloat(req.param("startLat"));
 	var startLongitude = parseFloat(req.param("startLng"));
 	var endLatitude = parseFloat(req.param("endLat"));
 	var endLongitude = parseFloat(req.param("endLng"));
-	var maxWaitingSeconds = req.param("maxWaitingSeconds");
+	//var maxWaitingSeconds = req.param("maxWaitingSeconds");
 
 	// then, we simply launch this heavy query into the database.
 	db_con.query(
@@ -386,24 +385,13 @@ router.get("/routes/search", function(req, res){
 				"INNER JOIN `RouteDate`RD ON R.`id` = RD.`route` "+
 			"WHERE "+
 				"DAYOFWEEK(STR_TO_DATE(?, '%Y-%m-%d %k:%i:%s')) = DAYOFWEEK(`route_date`) "+
-				"AND "+
-				"ABS(UNIX_TIMESTAMP(TIME(STR_TO_DATE(?, '%Y-%m-%d %k:%i:%s'))) - (UNIX_TIMESTAMP(TIME(`route_date`)) + `seconds_from_start`)) < ? "+
 			"ORDER BY "+
 				"ST_Distance(`point`, ST_GeomFromText('Point(? ?)'))) as starting_point, "+
-			"(SELECT RP.`route`, RP.`point_rank`, RP.`id` FROM `RoutePoints` RP "+
-				"INNER JOIN `Route` R ON R.`id` = RP.`route` "+
-				"INNER JOIN `RouteDate`RD ON R.`id` = RD.`route` "+
-			"WHERE "+
-				"DAYOFWEEK(STR_TO_DATE('?', '%Y-%m-%d %k:%i:%s')) = DAYOFWEEK(`route_date`) "+
-				"AND "+
-				"ABS(UNIX_TIMESTAMP(TIME(STR_TO_DATE('?', '%Y-%m-%d %k:%i:%s'))) - (UNIX_TIMESTAMP(TIME(`route_date`)) + `seconds_from_start`)) < ? "+
-			"ORDER BY "+
-				"ST_Distance(`point`, ST_GeomFromText('Point(? ?)'))) as end_point "+
 		"WHERE "+
 			"starting_point.`route` = end_point.`route` "+
 			"AND "+
 			"starting_point.`point_rank` < end_point.`point_rank`; "
-		, [startDate, startDate, maxWaitingSeconds, startLatitude, startLongitude, endDate, endDate, maxWaitingSeconds, endLatitude, endLongitude],
+		, [startDate, startLatitude, startLongitude, endLatitude, endLongitude],
 		function(err, result){
 			if(err) throw err;
 
