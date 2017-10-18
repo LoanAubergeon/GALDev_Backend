@@ -52,6 +52,12 @@ var db_con = mysql.createConnection({
 	multipleStatements: true
 });
 
+
+//connection.db_con(function(err) {
+//  if (err) throw err
+//  console.log('You are now connected...')
+//})
+
 // Setting up the app super secret
 app.set("superSecret", config.secret);
 
