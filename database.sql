@@ -64,6 +64,19 @@ CREATE TABLE `Ride` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `FavoriteRoute`
+--
+
+CREATE TABLE `FavoriteRoute` (
+  `id` int(11) NOT NULL COMMENT 'The id of the favoriteRoute',
+  `routeId` int(11) DEFAULT NULL COMMENT 'The route attached to this save',
+  `userId` int(11) DEFAULT NULL COMMENT 'The user attached to this save' 
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='A FavoriteRoute is an instance of a route';
+
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `Route`
 --
 
@@ -151,6 +164,15 @@ ALTER TABLE `Ride`
   ADD KEY `route` (`route`);
 
 --
+-- Indexes for table `Ride`
+--
+ALTER TABLE `FavoriteRoute`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `routeId` (`routeId`),
+  ADD KEY `userId` (`userId`);
+
+
+--
 -- Indexes for table `Route`
 --
 ALTER TABLE `Route`
@@ -196,6 +218,12 @@ ALTER TABLE `Rating`
 --
 ALTER TABLE `Ride`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'The id of the ride';
+  
+--
+-- AUTO_INCREMENT for table `Ride`
+--
+ALTER TABLE `FavoriteRoute`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'The id of the FavoriteRoute';
 --
 -- AUTO_INCREMENT for table `Route`
 --
@@ -240,6 +268,13 @@ ALTER TABLE `Rating`
 --
 ALTER TABLE `Ride`
   ADD CONSTRAINT `Ride_ibfk_1` FOREIGN KEY (`route`) REFERENCES `Route` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+--
+-- Constraints for table `Ride`
+--
+ALTER TABLE `FavoriteRoute`
+  ADD CONSTRAINT `FavoriteRoute_ibfk_1` FOREIGN KEY (`routeId`) REFERENCES `Route` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
 
 --
 -- Constraints for table `Route`
