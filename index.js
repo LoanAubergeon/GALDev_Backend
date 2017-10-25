@@ -828,6 +828,69 @@ router.delete("/ratings/:rateid", function(req, res){
 
 });
 
+
+
+
+
+
+
+
+
+router.get("/favoriteRoute", function(req, res){
+	db_con.query("SELECT * FROM FavoriteRoute", function(err, result){
+		if(err) throw err;
+		res.json(result);
+	});
+});
+
+router.get("/favoriteRoute/:routeId", function(req, res){
+	db_con.query("SELECT * FROM FavoriteRoute WHERE routeId = ?", [req.params.routeId], function(err, result){
+		if(err) throw err;
+		res.json(result);
+	});
+});
+
+router.get("/favoriteRoute/:userId", function(req, res){
+	db_con.query("SELECT * FROM FavoriteRoute WHERE userId = ?", [req.params.userId], function(err, result){
+		if(err) throw err;
+		res.json(result);
+	});
+});
+
+router.post("/favoriteRoute", function(req, res){
+	db_con.query("INSERT INTO FavoriteRoute (id, routeId, userId) VALUES (NULL,?,?)",
+		[req.body.routeId, req.body.userId],
+		function(err, result){
+			if(err) throw err;
+			res.json(result);
+		}
+	);
+});
+
+router.delete("/favoriteRoute/:routeId", function(req, res){
+	db_con.query("DELETE FROM FavoriteRoute WHERE routeId = ?", [req.params.routeId], function(err, result){
+		if(err) throw err;
+		res.json(result);
+	});
+
+});
+
+
+/* Ne fonctionne pas 
+router.delete("/favoriteRouteDoublons", function(req, res){
+	db_con.query("DELETE FROM FavoriteRoute LEFT OUTER JOIN (SELECT MIN(FavoriteRoute.id) as (routeId, userId) FROM FavoriteRoute GROUP BY (FavoriteRoute.routeId, FavoriteRoute.userId)) as t1 ON FavoriteRoute.id = t1.id WHERE t1.id IS NULL", function(err, result){
+		if(err) throw err;
+		res.json(result);
+	});
+
+});
+
+*/
+
+
+
+
+
 /* ==================
  *	Server listening
  * ==================
