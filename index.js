@@ -836,26 +836,24 @@ router.delete("/ratings/:rateid", function(req, res){
 
 
 
-router.get("/favoriteRoute", function(req, res){
-	db_con.query("SELECT * FROM FavoriteRoute", function(err, result){
-		if(err) throw err;
-		res.json(result);
-	});
-});
-
-router.get("/favoriteRoute/:routeId", function(req, res){
-	db_con.query("SELECT * FROM FavoriteRoute WHERE routeId = ?", [req.params.routeId], function(err, result){
-		if(err) throw err;
-		res.json(result);
-	});
-});
 
 router.get("/favoriteRoute/:userId", function(req, res){
-	db_con.query("SELECT * FROM FavoriteRoute WHERE userId = ?", [req.params.userId], function(err, result){
+	db_con.query("SELECT * FROM FavoriteRoute, Route WHERE ((FavoriteRoute.userId = ?) AND (FavoriteRoute.routeId = Route.id))", [req.params.userId], function(err, result){
 		if(err) throw err;
 		res.json(result);
 	});
 });
+
+
+router.get("/favoriteRoute", function(req, res){
+    var userId = req.param("userId")
+    var routeId = req.param("routeId")
+	db_con.query("SELECT * FROM FavoriteRoute WHERE FavoriteRoute.userId = ? AND FavoriteRoute.routeId = ?", [userId, routeId], function(err, result){
+		if(err) throw err;
+		res.json(result);
+	});
+});
+
 
 router.post("/favoriteRoute", function(req, res){
 	db_con.query("INSERT INTO FavoriteRoute (id, routeId, userId) VALUES (NULL,?,?)",
