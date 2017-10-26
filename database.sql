@@ -273,7 +273,7 @@ ALTER TABLE `Ride`
 -- Constraints for table `Ride`
 --
 ALTER TABLE `FavoriteRoute`
-  ADD CONSTRAINT `FavoriteRoute_ibfk_1` FOREIGN KEY (`routeId`) REFERENCES `Route` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+  ADD CONSTRAINT `FavoriteRoute_ibfk_1` FOREIGN KEY (`routeId`) REFERENCES `Route` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 
 --
