@@ -167,9 +167,8 @@ ALTER TABLE `Ride`
 -- Indexes for table `Ride`
 --
 ALTER TABLE `FavoriteRoute`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `routeId` (`routeId`),
-  ADD KEY `userId` (`userId`);
+  ADD PRIMARY KEY (`id`);
+  
 
 
 --
@@ -273,7 +272,7 @@ ALTER TABLE `Ride`
 -- Constraints for table `Ride`
 --
 ALTER TABLE `FavoriteRoute`
-  ADD CONSTRAINT `FavoriteRoute_ibfk_1` FOREIGN KEY (`routeId`) REFERENCES `Route` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `FavoriteRoute_ibfk_1` FOREIGN KEY (`routeId`) REFERENCES `Route` (`id`) ON DELETE CASCADE;
 
 
 --

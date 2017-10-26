@@ -856,7 +856,7 @@ router.get("/favoriteRoute", function(req, res){
 
 
 router.post("/favoriteRoute", function(req, res){
-	db_con.query("INSERT INTO FavoriteRoute (id, routeId, userId) VALUES (NULL,?,?)",
+	db_con.query("INSERT INTO FavoriteRoute (routeId, userId) VALUES (?,?)",
 		[req.body.routeId, req.body.userId],
 		function(err, result){
 			if(err) throw err;
